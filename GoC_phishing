@@ -10,11 +10,10 @@ def main():
     filepath = "./mails"
     if os.path.exists(filepath) != 1:
         sys.exit(84)
-    #mailsContent = []
-    #for mailFile in glob.glob("./mails/*.eml"):
-    #    mailsContent.append(mailFile)
     mailsContent = [mail for mail in glob.glob("./mails/*.eml")]
-
+    print(mailsContent)
+    for m in mailsContent:
+        print(m)
 
 if __name__ == '__main__':
     sys.exit(main())
