@@ -1,0 +1,54 @@
+#!/usr/bin/python3
+
+import sys
+import tkinter as tk
+from PIL import Image, ImageTk
+
+def scanning():
+    print("Scanning")
+
+def details():
+    print("Need details")
+
+def main():
+    print("App launched")
+    root = tk.Tk()
+    root.geometry("1589x868")
+    root.title("EPYPHISH - GoC 2022")
+    # canvas = tk.Canvas(root, width=600, height=300)
+    # canvas.grid(columnspan=3)
+
+    background = Image.open("background.png")
+    background = ImageTk.PhotoImage(background)
+    background_label = tk.Label(image=background)
+    background_label.image = background
+    background_label.place(x=0, y=0)
+
+    main_menu = Image.open("main_menu.png")
+    main_menu = ImageTk.PhotoImage(main_menu)
+    main_menu_label = tk.Label(image=main_menu, borderwidth=0)
+    main_menu_label.image = main_menu
+    main_menu_label.place(x=385, y=44)
+
+    img_scan = Image.open("scan_butt.png")
+    img_scan = ImageTk.PhotoImage(img_scan)
+    img_scan_label = tk.Button(image=img_scan, highlightthickness=0, bd=0, command=scanning)
+    img_scan_label.place(x=684, y=594)
+
+    img_details = Image.open("details_butt.png")
+    img_details = ImageTk.PhotoImage(img_details)
+    img_details_label = tk.Button(image=img_details, highlightthickness=0, bd=0, command=details)
+    img_details_label.place(x=972, y=594)
+
+    # instruction = tk.Label(root, text="Test to write some words", font="Raleway")
+    # instruction.grid(columnspan=3, column=0, row=1)
+
+    # scan_text = tk.StringVar()
+    # scan_btn = tk.Button(root, textvariable=scan_text, font="Raleway")
+    # scan_text.set("scan")
+    # scan_btn.grid(column=1, row=2)
+
+    root.mainloop()
+
+if __name__ == '__main__':
+    sys.exit(main())
