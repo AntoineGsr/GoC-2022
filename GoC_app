@@ -14,13 +14,13 @@ class Page(tk.Frame):
 class Page1(Page):
     def __init__(self, *args, **kwargs):
         Page.__init__(self, *args, **kwargs)
-        main_menu = Image.open("main_menu.png")
+        main_menu = Image.open("assets/main_menu.png")
         main_menu = ImageTk.PhotoImage(main_menu)
         main_menu_label = tk.Label(image=main_menu, borderwidth=0)
         main_menu_label.image = main_menu
         main_menu_label.place(x=385, y=44)
 
-        img_scan = Image.open("scan_butt.png")
+        img_scan = Image.open("assets/scan_butt.png")
         img_scan = ImageTk.PhotoImage(img_scan)
         img_scan_label = tk.Label(image=img_scan, borderwidth=0)
         img_scan_label.image = img_scan
@@ -28,7 +28,7 @@ class Page1(Page):
         img_scan_label.bind("<Button-1>", scanning)
         img_scan_label.place(x=684, y=594)
 
-        img_details = Image.open("details_butt.png")
+        img_details = Image.open("assets/details_butt.png")
         img_details = ImageTk.PhotoImage(img_details)
         img_details_label = tk.Label(image=img_details, borderwidth=0)
         img_details_label.image = img_details
@@ -40,7 +40,7 @@ class MainView(tk.Frame):
     def __init__(self, *args, **kwargs):
         tk.Frame.__init__(self, *args, **kwargs)
 
-        background = Image.open("background.png")
+        background = Image.open("assets/background.png")
         background = ImageTk.PhotoImage(background)
         background_label = tk.Label(image=background)
         background_label.image = background
