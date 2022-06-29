@@ -12,6 +12,7 @@ page1 = 1
 page2 = 0
 nbSecure = 0
 nbPhishing = 0
+purge = []
 
 def Page1(null):
     main_menu = Image.open("assets/main_menu.png")
@@ -46,8 +47,36 @@ def Page2(null):
     result_label.image = result
     result_label.pack()
     result_label.place(x=385, y=44)
+
+    purge = Image.open("assets/purge_butt.png")
+    purge = ImageTk.PhotoImage(purge)
+    purge_label = tk.Label(image=purge, borderwidth=0)
+    purge_label.image = purge
+    purge_label.pack()
+    purge_label.bind("<Button-1>", make_purge)
+    purge_label.place(x=843, y=707)
+
     page1 = 0
     page2 = 1
+
+    text = tk.Label(root, text=nbSecure, font="Raleway")
+    text.place(x=590,y=388)
+    text.config(font=("Courier", 50), bg="#202020", text=nbSecure)
+    text2 = tk.Label(root, text=nbPhishing, font="Raleway")
+    text2.place(x=1230,y=388)
+    text2.config(font=("Courier", 50), bg="#202020", text=nbPhishing)
+    text3 = tk.Label(root, text=nbPhishing + nbSecure, font="Raleway")
+    text3.place(x=840,y=358)
+    text3.config(font=("Courier", 150), bg="#202020", text=nbSecure + nbPhishing)
+
+def make_purge(null):
+    global nbPhishing
+    nbPhishing = 0
+    global purge
+    for file in purge:
+        if os.path.isfile(file):
+            os.remove(file) 
+    purge = []
 
 def scanning(null):
     print("Scanning")
@@ -56,18 +85,31 @@ def scanning(null):
         print("Please create a folder named 'mails' and add each file.eml you want check")
         sys.exit(84)
     mailsContent = [mail for mail in glob.glob("./mails/*.eml")]
+    tmpPhishing = 0
+    tmpSecure = 0
     print(mailsContent)
+    global purge
     for m in mailsContent:
         print(m)
-        nbPhishing = 1
-        nbSecure = 1
+        tmp = os.system("java -jar script/ColorChecker-1.jar " + m)
+        if tmp == 0:
+            tmpSecure += 1
+        else:
+            tmpPhishing += 1
+            purge.append(m)
+    global nbPhishing
+    global nbSecure
+    nbPhishing = tmpPhishing
+    nbSecure = tmpSecure
 
 def details(null):
     webbrowser.open('https://github.com/AntoineGsr/GoC-2022')
 
+root = tk.Tk()
+
 def main():
     print("App launched")
-    root = tk.Tk()
+    
     root.wm_geometry("1589x868")
     root.title("EPYPHISH - GoC 2022")
 
