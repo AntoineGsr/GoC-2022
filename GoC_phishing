@@ -5,15 +5,46 @@ import math
 import os
 import glob
 import os.path
+from translate import Translator
+
+def content_trad(filepath):
+    content = []
+    with open(filepath, 'r') as file:
+        data = file.read().replace('\n', '')
+    translator = Translator(from_lang="russian", to_lang="english")
+    translation = translator.translate(data)
+    return (translation)
+
+def check_profile(filepath):
+    print("Check profile email |", filepath)
+
+def check_object(filepath):
+    print("Check object |", filepath)
+
+def check_content(filepath):
+    print("Check content |", filepath)
+
+def check_sign(filepath):
+    print("Check sign |", filepath)
+
+def check_attachments(filepath):
+    print("Check attachment |", filepath)
 
 def main():
-    filepath = "./mails"
-    if os.path.exists(filepath) != 1:
+    folderpath = "./mails"
+    if os.path.exists(folderpath) != 1:
+        print("Please create a folder named 'mails' and add each file.eml you want check")
         sys.exit(84)
     mailsContent = [mail for mail in glob.glob("./mails/*.eml")]
     print(mailsContent)
     for m in mailsContent:
-        print(m)
+        traduction = content_trad(m)
+        print(traduction)
+        profile = check_profile(m)
+        obj = check_object(m)
+        content = check_content(m)
+        sign = check_sign(m)
+        attachments = check_attachments(m)
 
 if __name__ == '__main__':
     sys.exit(main())
