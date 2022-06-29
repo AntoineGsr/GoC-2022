@@ -3,42 +3,80 @@
 import sys
 import tkinter as tk
 from PIL import Image, ImageTk
+import webbrowser
 
-def scanning():
+class Page(tk.Frame):
+    def __init__(self, *args, **kwargs):
+        tk.Frame.__init__(self, *args, **kwargs)
+    def show(self):
+        self.lift()
+
+class Page1(Page):
+    def __init__(self, *args, **kwargs):
+        Page.__init__(self, *args, **kwargs)
+        main_menu = Image.open("main_menu.png")
+        main_menu = ImageTk.PhotoImage(main_menu)
+        main_menu_label = tk.Label(image=main_menu, borderwidth=0)
+        main_menu_label.image = main_menu
+        main_menu_label.place(x=385, y=44)
+
+        img_scan = Image.open("scan_butt.png")
+        img_scan = ImageTk.PhotoImage(img_scan)
+        img_scan_label = tk.Label(image=img_scan, borderwidth=0)
+        img_scan_label.image = img_scan
+        img_scan_label.pack()
+        img_scan_label.bind("<Button-1>", scanning)
+        img_scan_label.place(x=684, y=594)
+
+        img_details = Image.open("details_butt.png")
+        img_details = ImageTk.PhotoImage(img_details)
+        img_details_label = tk.Label(image=img_details, borderwidth=0)
+        img_details_label.image = img_details
+        img_details_label.pack()
+        img_details_label.bind("<Button-1>", details)
+        img_details_label.place(x=972, y=594)
+
+class MainView(tk.Frame):
+    def __init__(self, *args, **kwargs):
+        tk.Frame.__init__(self, *args, **kwargs)
+
+        background = Image.open("background.png")
+        background = ImageTk.PhotoImage(background)
+        background_label = tk.Label(image=background)
+        background_label.image = background
+        background_label.place(x=0, y=0)
+
+        p1 = Page1(self)
+    
+        buttonframe = tk.Frame(self)
+        container = tk.Frame(self)
+        buttonframe.pack(side="top", fill="x", expand=False)
+        container.pack(side="top", fill="both", expand=True)
+
+        p1.place(in_=container, x=0, y=0, relwidth=1, relheight=1)
+
+        b1 = tk.Button(buttonframe, text="Page 1", command=p1.show)
+
+        b1.pack(side="left")
+
+        p1.show()
+
+def scanning(null):
     print("Scanning")
 
-def details():
-    print("Need details")
+def details(null):
+    webbrowser.open('https://github.com/AntoineGsr/GoC-2022')
 
 def main():
     print("App launched")
     root = tk.Tk()
-    root.geometry("1589x868")
+    root.wm_geometry("1589x868")
     root.title("EPYPHISH - GoC 2022")
     # canvas = tk.Canvas(root, width=600, height=300)
     # canvas.grid(columnspan=3)
 
-    background = Image.open("background.png")
-    background = ImageTk.PhotoImage(background)
-    background_label = tk.Label(image=background)
-    background_label.image = background
-    background_label.place(x=0, y=0)
-
-    main_menu = Image.open("main_menu.png")
-    main_menu = ImageTk.PhotoImage(main_menu)
-    main_menu_label = tk.Label(image=main_menu, borderwidth=0)
-    main_menu_label.image = main_menu
-    main_menu_label.place(x=385, y=44)
-
-    img_scan = Image.open("scan_butt.png")
-    img_scan = ImageTk.PhotoImage(img_scan)
-    img_scan_label = tk.Button(image=img_scan, highlightthickness=0, bd=0, command=scanning)
-    img_scan_label.place(x=684, y=594)
-
-    img_details = Image.open("details_butt.png")
-    img_details = ImageTk.PhotoImage(img_details)
-    img_details_label = tk.Button(image=img_details, highlightthickness=0, bd=0, command=details)
-    img_details_label.place(x=972, y=594)
+    main = MainView(root)
+    main.pack(side="top", fill="both", expand=True)
 
     # instruction = tk.Label(root, text="Test to write some words", font="Raleway")
     # instruction.grid(columnspan=3, column=0, row=1)
