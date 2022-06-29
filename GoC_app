@@ -1,68 +1,66 @@
 #!/usr/bin/python3
 
 import sys
+import os
+import glob
+import os.path
 import tkinter as tk
 from PIL import Image, ImageTk
 import webbrowser
 
-class Page(tk.Frame):
-    def __init__(self, *args, **kwargs):
-        tk.Frame.__init__(self, *args, **kwargs)
-    def show(self):
-        self.lift()
+page1 = 1
+page2 = 0
+nbSecure = 0
+nbPhishing = 0
 
-class Page1(Page):
-    def __init__(self, *args, **kwargs):
-        Page.__init__(self, *args, **kwargs)
-        main_menu = Image.open("assets/main_menu.png")
-        main_menu = ImageTk.PhotoImage(main_menu)
-        main_menu_label = tk.Label(image=main_menu, borderwidth=0)
-        main_menu_label.image = main_menu
-        main_menu_label.place(x=385, y=44)
+def Page1(null):
+    main_menu = Image.open("assets/main_menu.png")
+    main_menu = ImageTk.PhotoImage(main_menu)
+    main_menu_label = tk.Label(image=main_menu, borderwidth=0)
+    main_menu_label.image = main_menu
+    main_menu_label.pack()
+    main_menu_label.place(x=385, y=44)
 
-        img_scan = Image.open("assets/scan_butt.png")
-        img_scan = ImageTk.PhotoImage(img_scan)
-        img_scan_label = tk.Label(image=img_scan, borderwidth=0)
-        img_scan_label.image = img_scan
-        img_scan_label.pack()
-        img_scan_label.bind("<Button-1>", scanning)
-        img_scan_label.place(x=684, y=594)
+    img_scan = Image.open("assets/scan_butt.png")
+    img_scan = ImageTk.PhotoImage(img_scan)
+    img_scan_label = tk.Label(image=img_scan, borderwidth=0)
+    img_scan_label.image = img_scan
+    img_scan_label.pack()
+    img_scan_label.bind("<Button-1>", scanning)
+    img_scan_label.place(x=684, y=594)
 
-        img_details = Image.open("assets/details_butt.png")
-        img_details = ImageTk.PhotoImage(img_details)
-        img_details_label = tk.Label(image=img_details, borderwidth=0)
-        img_details_label.image = img_details
-        img_details_label.pack()
-        img_details_label.bind("<Button-1>", details)
-        img_details_label.place(x=972, y=594)
+    img_details = Image.open("assets/details_butt.png")
+    img_details = ImageTk.PhotoImage(img_details)
+    img_details_label = tk.Label(image=img_details, borderwidth=0)
+    img_details_label.image = img_details
+    img_details_label.pack()
+    img_details_label.bind("<Button-1>", details)
+    img_details_label.place(x=972, y=594)
+    page1 = 1
+    page2 = 0
 
-class MainView(tk.Frame):
-    def __init__(self, *args, **kwargs):
-        tk.Frame.__init__(self, *args, **kwargs)
-
-        background = Image.open("assets/background.png")
-        background = ImageTk.PhotoImage(background)
-        background_label = tk.Label(image=background)
-        background_label.image = background
-        background_label.place(x=0, y=0)
-
-        p1 = Page1(self)
-    
-        buttonframe = tk.Frame(self)
-        container = tk.Frame(self)
-        buttonframe.pack(side="top", fill="x", expand=False)
-        container.pack(side="top", fill="both", expand=True)
-
-        p1.place(in_=container, x=0, y=0, relwidth=1, relheight=1)
-
-        b1 = tk.Button(buttonframe, text="Page 1", command=p1.show)
-
-        b1.pack(side="left")
-
-        p1.show()
+def Page2(null):
+    result = Image.open("assets/result.png")
+    result = ImageTk.PhotoImage(result)
+    result_label = tk.Label(image=result, borderwidth=0)
+    result_label.image = result
+    result_label.pack()
+    result_label.place(x=385, y=44)
+    page1 = 0
+    page2 = 1
 
 def scanning(null):
     print("Scanning")
+    folderpath = "./mails"
+    if os.path.exists(folderpath) != 1:
+        print("Please create a folder named 'mails' and add each file.eml you want check")
+        sys.exit(84)
+    mailsContent = [mail for mail in glob.glob("./mails/*.eml")]
+    print(mailsContent)
+    for m in mailsContent:
+        print(m)
+        nbPhishing = 1
+        nbSecure = 1
 
 def details(null):
     webbrowser.open('https://github.com/AntoineGsr/GoC-2022')
@@ -72,19 +70,32 @@ def main():
     root = tk.Tk()
     root.wm_geometry("1589x868")
     root.title("EPYPHISH - GoC 2022")
-    # canvas = tk.Canvas(root, width=600, height=300)
-    # canvas.grid(columnspan=3)
 
-    main = MainView(root)
-    main.pack(side="top", fill="both", expand=True)
+    background = Image.open("assets/background.png")
+    background = ImageTk.PhotoImage(background)
+    background_label = tk.Label(image=background)
+    background_label.image = background
+    background_label.place(x=0, y=0)
 
-    # instruction = tk.Label(root, text="Test to write some words", font="Raleway")
-    # instruction.grid(columnspan=3, column=0, row=1)
+    home = Image.open("assets/home_butt.png")
+    home = ImageTk.PhotoImage(home)
+    home_label = tk.Label(image=home, borderwidth=0)
+    home_label.image = home
+    home_label.pack()
+    home_label.bind("<Button-1>", Page1)
+    home_label.place(x=131, y=239)
 
-    # scan_text = tk.StringVar()
-    # scan_btn = tk.Button(root, textvariable=scan_text, font="Raleway")
-    # scan_text.set("scan")
-    # scan_btn.grid(column=1, row=2)
+    result = Image.open("assets/result_butt.png")
+    result = ImageTk.PhotoImage(result)
+    result_label = tk.Label(image=result, borderwidth=0)
+    result_label.image = result
+    result_label.pack()
+    result_label.bind("<Button-1>", Page2)
+    result_label.place(x=131, y=325)
+    if page1 == 1:
+        Page1("null")
+    else:
+        Page2("null")
 
     root.mainloop()
 
