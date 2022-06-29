@@ -1,0 +1,20 @@
+#!/usr/bin/python3
+
+import sys
+import math
+import os
+import glob
+import os.path
+
+def main():
+    filepath = "./mails"
+    if os.path.exists(filepath) != 1:
+        sys.exit(84)
+    #mailsContent = []
+    #for mailFile in glob.glob("./mails/*.eml"):
+    #    mailsContent.append(mailFile)
+    mailsContent = [mail for mail in glob.glob("./mails/*.eml")]
+
+
+if __name__ == '__main__':
+    sys.exit(main())
